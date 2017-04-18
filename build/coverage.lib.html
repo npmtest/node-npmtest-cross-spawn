@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for node-npmtest-cross-spawn/cross-spawn/lib/util/resolveCommand.js</title>
+    <title>Code coverage report for node-npmtest-cross-spawn/node_modules/cross-spawn/lib/util/escapeArgument.js</title>
     <meta charset="utf-8">
     <style>
         body, html {
@@ -194,23 +194,23 @@
     <h1 style="font-weight: bold;">
         <a href="https://github.com/npmtest/node-npmtest-cross-spawn">npmtest-cross-spawn (v0.0.1)</a>
     </h1>
-    <h1>Code coverage report for <span class="entity">node-npmtest-cross-spawn/cross-spawn/lib/util/resolveCommand.js</span></h1>
+    <h1>Code coverage report for <span class="entity">node-npmtest-cross-spawn/node_modules/cross-spawn/lib/util/escapeArgument.js</span></h1>
     <h2>
         
-        Statements: <span class="metric">40% <small>(6 / 15)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Statements: <span class="metric">22.22% <small>(2 / 9)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Branches: <span class="metric">0% <small>(0 / 6)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">0% <small>(0 / 2)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
         Functions: <span class="metric">0% <small>(0 / 1)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Lines: <span class="metric">40% <small>(6 / 15)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">22.22% <small>(2 / 9)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
     </h2>
-    <div class="path"><a href="../../../../index.html">All files</a> &#187; <a href="index.html">node-npmtest-cross-spawn/cross-spawn/lib/util/</a> &#187; resolveCommand.js</div>
+    <div class="path"><a href="../../../../../index.html">All files</a> &#187; <a href="index.html">node-npmtest-cross-spawn/node_modules/cross-spawn/lib/util/</a> &#187; escapeArgument.js</div>
 </div>
 <div class="body">
 <pre><table class="coverage">
@@ -245,24 +245,12 @@
 29
 30
 31
-32
-33</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
+32</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -270,8 +258,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -280,41 +278,40 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
 &nbsp;
-var path = require('path');
-var which = require('which');
-var LRU = require('lru-cache');
+<span class="fstat-no" title="function not covered" >function escapeArgument(arg, quote) {</span>
+    // Convert to string
+<span class="cstat-no" title="statement not covered" >    arg = '' + arg;</span>
 &nbsp;
-var commandCache = new LRU({ max: 50, maxAge: 30 * 1000 });  // Cache just for 30sec
+    // If we are not going to quote the argument,
+    // escape shell metacharacters, including double and single quotes:
+<span class="cstat-no" title="statement not covered" >    if (!quote) {</span>
+<span class="cstat-no" title="statement not covered" >        arg = arg.replace(/([()%!^&lt;&gt;&amp;|;,"'\s])/g, '^$1');</span>
+    } else {
+        // Sequence of backslashes followed by a double quote:
+        // double up all the backslashes and escape the double quote
+<span class="cstat-no" title="statement not covered" >        arg = arg.replace(/(\\*)"/g, '$1$1\\"');</span>
 &nbsp;
-<span class="fstat-no" title="function not covered" >function resolveCommand(command, noExtension) {</span>
-<span class="cstat-no" title="statement not covered" >    var resolved;</span>
+        // Sequence of backslashes followed by the end of the string
+        // (which will become a double quote later):
+        // double up all the backslashes
+<span class="cstat-no" title="statement not covered" >        arg = arg.replace(/(\\*)$/, '$1$1');</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    noExtension = !!noExtension;</span>
-<span class="cstat-no" title="statement not covered" >    resolved = commandCache.get(command + '!' + noExtension);</span>
+        // All other backslashes occur literally
 &nbsp;
-    // Check if its resolved in the cache
-<span class="cstat-no" title="statement not covered" >    if (commandCache.has(command)) {</span>
-<span class="cstat-no" title="statement not covered" >        return commandCache.get(command);</span>
+        // Quote the whole thing:
+<span class="cstat-no" title="statement not covered" >        arg = '"' + arg + '"';</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >        resolved = !noExtension ?</span>
-            which.sync(command) :
-            which.sync(command, { pathExt: path.delimiter + (process.env.PATHEXT || '') });
-    } catch (e) { /* empty */ }
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    commandCache.set(command + '!' + noExtension, resolved);</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    return resolved;</span>
+<span class="cstat-no" title="statement not covered" >    return arg;</span>
 }
 &nbsp;
-module.exports = resolveCommand;
+module.exports = escapeArgument;
 &nbsp;
 &nbsp;</pre></td></tr>
 </table></pre>
 </div>
 <div class="footer">
-    <div class="meta">Generated by <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a> at Tue Apr 11 2017 18:01:01 GMT+0000 (UTC)</div>
+    <div class="meta">Generated by <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a> at Tue Apr 18 2017 17:35:52 GMT+0000 (UTC)</div>
 </div>
 </body>
 </html>
